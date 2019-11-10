@@ -14,18 +14,13 @@ defmodule Jobseeker9000Web.PageController do
   end
 
   defp test() do
-    html = """
-<body><div class="example"><a class="lol" href="abba">abba</a></div><div class="example"><a href="ojcze">ojcze</a></div></div></body>
-    """
-    # |> Floki.find(html, "body")
-    # divs = test_on_first(Floki.find(html, "div.example"))
-    # Enum.maps(divs, encode(divs))
-    # Enum.map(divs, &encode/1)
-    [href | more_than_one] = Floki.attribute(html, "a.lol", "href" )
-    IO.puts href
-    IO.puts (more_than_one == [])
-    "ok"
-    # |> Floki.raw_html
+    y = 2
+    case 7 do
+      1 -> "Math is broken"
+      x -> y = x
+    end
+    IO.puts "ok"
+    IO.puts y
   end
 
   def index(conn, _params) do
