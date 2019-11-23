@@ -13,9 +13,9 @@ defmodule Jobseeker9000.Jobs.Offer do
     many_to_many :flags, Jobseeker9000.Jobs.Flag, join_through: "offers_flags"
 	end
 	
-	# def changeset(offer, params) do
-	# 	offer
-	# 	|> cast(params, [:name, :from, :ending, :found_on, :url])
-	# 	|> validate_required([:name, :from, :found_on, :url])
-	# end
+	def changeset(offer, params) do
+		offer
+		|> cast(params, [:name, :from, :ending, :found_on, :url, :state, :company_id])
+		|> validate_required([:name, :from, :found_on, :url])
+	end
 end

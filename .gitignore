@@ -30,6 +30,7 @@ npm-debug.log
 
 
 /config/dev.exs
+/config/test.exs
 
 # Since we are building assets from assets/,
 # we ignore priv/static. You may want to comment

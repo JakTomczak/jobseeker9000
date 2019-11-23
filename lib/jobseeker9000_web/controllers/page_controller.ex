@@ -24,7 +24,7 @@ defmodule Jobseeker9000Web.PageController do
   end
 
   def index(conn, _params) do
-    IO.puts "starting"
+    # IO.puts "starting"
     render(conn, "index.html", res: run())
   end
 end

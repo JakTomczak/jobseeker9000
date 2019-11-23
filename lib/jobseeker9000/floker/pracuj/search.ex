@@ -82,7 +82,7 @@ defmodule Jobseeker9000.Floker.Pracuj.Search do
   end
 
   @test """
-<body><div id="results" class="example"><li class="results__list-container-item"><a class="lol" href="abba">abba</a></li><li class="results__list-container-item"><a href="ojcze">ojcze</a></li></div></body>
+ <body><div id="results" class="example"><li class="results__list-container-item"><a class="lol" href="abba">abba</a></li><li class="results__list-container-item"><a href="ojcze">ojcze</a></li></div></body>
     """
 
   def run(html) do
@@ -91,7 +91,7 @@ defmodule Jobseeker9000.Floker.Pracuj.Search do
     |> find_lis()
     |> test_on_first()
     |> li_crawler()
-    |> IO.inspect
+    # |> IO.inspect
     "ok"
   end
 end
