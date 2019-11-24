@@ -9,9 +9,9 @@ defmodule Jobseeker9000.Jobs.Company do
 		has_many :offers, Jobseeker9000.Jobs.Offer
 	end
 	
-	# def changeset(offer, params) do
-	# 	offer
-	# 	|> cast(params, [:name, :from, :ending, :found_on, :url])
-	# 	|> validate_required([:name, :from, :found_on, :url])
-	# end
+	def changeset(offer, params) do
+		offer
+		|> cast(params, [:name, :found_on, :url])
+		|> validate_required([:name, :found_on, :url])
+	end
 end

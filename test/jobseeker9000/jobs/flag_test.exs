@@ -20,38 +20,38 @@ defmodule Jobseeker9000.Jobs.FlagTest do
   }
 
   describe "without relational fields' tests" do
-    test "create_flag/1 and change_flag/2 with valid data" do
-      assert {:ok, %Flag{} = flag} = Jobs.create_flag(@valid_attrs)
+    test "create/2 and change/2 flag with valid data" do
+      assert {:ok, %Flag{} = flag} = Jobs.create(:flag, @valid_attrs)
       assert flag.calls == @calls1
-      assert {:ok, %Flag{} = flag} = Jobs.change_flag(flag, @change_attrs)
+      assert {:ok, %Flag{} = flag} = Jobs.change(flag, @change_attrs)
       assert flag.calls == @calls2
     end
 
-    test "create_flag/1 with invalid data" do
-      assert {:error, %Ecto.Changeset{}} = Jobs.create_flag(@invalid_attrs)
+    test "create/2 flag with invalid data" do
+      assert {:error, %Ecto.Changeset{}} = Jobs.create(:flag, @invalid_attrs)
     end
 
-    test "change_flag/2 with invalid data" do
-      assert {:ok, %Flag{} = flag} = Jobs.create_flag(@valid_attrs)
-      assert {:error, %Ecto.Changeset{}} = Jobs.change_flag(flag, @invalid_attrs)
+    test "change/2 flag with invalid data" do
+      assert {:ok, %Flag{} = flag} = Jobs.create(:flag, @valid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Jobs.change(flag, @invalid_attrs)
     end
 
-    test "list_flags/0" do
-      assert [] = Jobs.list_flags
-      assert {:ok, %Flag{} = flag} = Jobs.create_flag(@valid_attrs)
-      assert [%Flag{}] = Jobs.list_flags
+    test "list/1 flag" do
+      assert [] = Jobs.list(:flag)
+      assert {:ok, %Flag{} = flag} = Jobs.create(:flag, @valid_attrs)
+      assert [%Flag{}] = Jobs.list(:flag)
     end
 
-    test "get_flag/1" do
-      assert nil == Jobs.get_flag(1)
-      assert {:ok, %Flag{} = flag} = Jobs.create_flag(@valid_attrs)
-      assert %Flag{} = Jobs.get_flag(flag.id)
+    test "get/2 flag" do
+      assert nil == Jobs.get(:flag, 1)
+      assert {:ok, %Flag{} = flag} = Jobs.create(:flag, @valid_attrs)
+      assert %Flag{} = Jobs.get(:flag, flag.id)
     end
 
-    test "get_flag_by/1" do
-      assert nil == Jobs.get_flag_by(@change_attrs)
-      assert {:ok, %Flag{} = flag} = Jobs.create_flag(@valid_attrs)
-      assert %Flag{} = Jobs.get_flag_by(calls: flag.calls)
+    test "get_by/2 flag" do
+      assert nil == Jobs.get_by(:flag, @change_attrs)
+      assert {:ok, %Flag{} = flag} = Jobs.create(:flag, @valid_attrs)
+      assert %Flag{} = Jobs.get_by(:flag, calls: flag.calls)
     end
   end
 end

@@ -28,38 +28,38 @@ defmodule Jobseeker9000.Jobs.OfferTest do
   }
 
   describe "without relational fields' tests" do
-    test "create_offer/1 and change_offer/2 with valid data" do
-      assert {:ok, %Offer{} = offer} = Jobs.create_offer(@valid_attrs)
+    test "create/2 and change/2 offer with valid data" do
+      assert {:ok, %Offer{} = offer} = Jobs.create(:offer, @valid_attrs)
       assert offer.state == @state1
-      assert {:ok, %Offer{} = offer} = Jobs.change_offer(offer, @change_attrs)
+      assert {:ok, %Offer{} = offer} = Jobs.change(offer, @change_attrs)
       assert offer.state == @state2
     end
 
-    test "create_offer/1 with invalid data" do
-      assert {:error, %Ecto.Changeset{}} = Jobs.create_offer(@invalid_attrs)
+    test "create/2 offer with invalid data" do
+      assert {:error, %Ecto.Changeset{}} = Jobs.create(:offer, @invalid_attrs)
     end
 
-    test "change_offer/2 with invalid data" do
-      assert {:ok, %Offer{} = offer} = Jobs.create_offer(@valid_attrs)
-      assert {:error, %Ecto.Changeset{}} = Jobs.change_offer(offer, @invalid_attrs)
+    test "change/2 offer with invalid data" do
+      assert {:ok, %Offer{} = offer} = Jobs.create(:offer, @valid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Jobs.change(offer, @invalid_attrs)
     end
 
-    test "list_offers/0" do
-      assert [] = Jobs.list_offers
-      assert {:ok, %Offer{} = offer} = Jobs.create_offer(@valid_attrs)
-      assert [%Offer{}] = Jobs.list_offers
+    test "list/1 offers" do
+      assert [] = Jobs.list(:offer)
+      assert {:ok, %Offer{} = offer} = Jobs.create(:offer, @valid_attrs)
+      assert [%Offer{}] = Jobs.list(:offer)
     end
 
-    test "get_offer/1" do
-      assert nil == Jobs.get_offer(1)
-      assert {:ok, %Offer{} = offer} = Jobs.create_offer(@valid_attrs)
-      assert %Offer{} = Jobs.get_offer(offer.id)
+    test "get/2 offer" do
+      assert nil == Jobs.get(:offer, 1)
+      assert {:ok, %Offer{} = offer} = Jobs.create(:offer, @valid_attrs)
+      assert %Offer{} = Jobs.get(:offer, offer.id)
     end
 
-    test "get_offer_by/1" do
-      assert nil == Jobs.get_offer_by(@change_attrs)
-      assert {:ok, %Offer{} = offer} = Jobs.create_offer(@valid_attrs)
-      assert %Offer{} = Jobs.get_offer_by(state: offer.state)
+    test "get_by/2 offer" do
+      assert nil == Jobs.get_by(:offer, @change_attrs)
+      assert {:ok, %Offer{} = offer} = Jobs.create(:offer, @valid_attrs)
+      assert %Offer{} = Jobs.get_by(:offer, state: offer.state)
     end
   end
 end

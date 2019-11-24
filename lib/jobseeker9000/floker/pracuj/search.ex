@@ -83,7 +83,7 @@ defmodule Jobseeker9000.Floker.Pracuj.Search do
 
   @test """
  <body><div id="results" class="example"><li class="results__list-container-item"><a class="lol" href="abba">abba</a></li><li class="results__list-container-item"><a href="ojcze">ojcze</a></li></div></body>
-    """
+ """
 
   def run(html) do
     %Pracuj{state: :ok, full_html: html}
