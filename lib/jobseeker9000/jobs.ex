@@ -6,6 +6,8 @@ defmodule Jobseeker9000.Jobs do
   alias Jobseeker9000.Jobs.Flag
   alias Jobseeker9000.Jobs.Company
 
+	# Common:
+
 	def get(:offer, id), do: Repo.get(Offer, id)
 	def get(:flag, id), do: Repo.get(Flag, id)
 	def get(:company, id), do: Repo.get(Company, id)
@@ -22,20 +24,35 @@ defmodule Jobseeker9000.Jobs do
 	def change(%Flag{} = flag, params), do: Flag.changeset(flag, params) |> Repo.update()
 	def change(%Company{} = company, params), do: Company.changeset(company, params) |> Repo.update()
 
-	def create(nil, params \\ %{}), do: nil
-	def create(:offer, params) do
+	def create(params \\ %{}, what)
+	def create(params, :offer) do
 		%Offer{}
 		|> Offer.changeset(params)
 		|> Repo.insert()
 	end
-	def create(:flag, params) do
+	def create(params, :flag) do
 		%Flag{}
 		|> Flag.changeset(params)
 		|> Repo.insert()
 	end
-	def create(:company, params) do
+	def create(params, :company) do
 		%Company{}
 		|> Company.changeset(params)
 		|> Repo.insert()
+	end
+
+	# Offer specific:
+
+	def add_flags(%Offer{} = offer, %Flag{} = flags), do: add_flags(offer, [flags])
+	def add_flags(%Offer{} = offer, flags) when is_list(flags) do
+		offer
+		|> Repo.preload(:flags)
+		|> Offer.changeset_updating_flags(flags)
+		|> Repo.update()
+	end
+
+	def get_flags(%Offer{} = offer) do
+		offer = Repo.preload(offer, :flags)
+		offer.flags
 	end
 end

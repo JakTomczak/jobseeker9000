@@ -18,4 +18,10 @@ defmodule Jobseeker9000.Jobs.Offer do
 		|> cast(params, [:name, :from, :ending, :found_on, :url, :state, :company_id])
 		|> validate_required([:name, :from, :found_on, :url])
 	end
+
+	def changeset_updating_flags(offer, flags) do
+		offer
+		|> changeset(%{})
+		|> put_assoc(:flags, flags)
+	end
 end
