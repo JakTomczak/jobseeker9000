@@ -1,6 +1,7 @@
 defmodule Jobseeker9000.Jobs.Offer do
 	use Ecto.Schema
 	import Ecto.Changeset
+  alias Jobseeker9000.Repo
 	
 	schema "offer" do
 		field :name, :string
@@ -10,7 +11,7 @@ defmodule Jobseeker9000.Jobs.Offer do
 		field :url, :string
     field :state, :string
 		belongs_to :company, Jobseeker9000.Jobs.Company
-    many_to_many :flags, Jobseeker9000.Jobs.Flag, join_through: "offers_flags"
+    many_to_many :flags, Jobseeker9000.Jobs.Flag, join_through: "offers_flags", on_replace: :delete
 	end
 	
 	def changeset(offer, params) do
@@ -19,7 +20,7 @@ defmodule Jobseeker9000.Jobs.Offer do
 		|> validate_required([:name, :from, :found_on, :url])
 	end
 
-	def changeset_updating_flags(offer, flags) do
+	def changeset_setting_flags(offer, flags) do
 		offer
 		|> changeset(%{})
 		|> put_assoc(:flags, flags)

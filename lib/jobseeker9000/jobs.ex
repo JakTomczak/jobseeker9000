@@ -43,16 +43,38 @@ defmodule Jobseeker9000.Jobs do
 
 	# Offer specific:
 
-	def add_flags(%Offer{} = offer, %Flag{} = flags), do: add_flags(offer, [flags])
-	def add_flags(%Offer{} = offer, flags) when is_list(flags) do
+	def set_flags(%Offer{} = offer, %Flag{} = flags), do: set_flags(offer, [flags])
+	def set_flags(%Offer{} = offer, flags) when is_list(flags) do
 		offer
 		|> Repo.preload(:flags)
-		|> Offer.changeset_updating_flags(flags)
+		|> Offer.changeset_setting_flags(flags)
 		|> Repo.update()
 	end
 
-	def get_flags(%Offer{} = offer) do
+	def list_flags(%Offer{} = offer) do
 		offer = Repo.preload(offer, :flags)
 		offer.flags
+	end
+
+	def get_company(%Offer{} = offer) do
+		offer = Repo.preload(offer, :company)
+		offer.company
+	end
+
+	# Company specific:
+
+	def link_offers(%Company{} = company, %Offer{} = offer), do: link_offers(company, [offer])
+	def link_offers(%Company{} = company, offers) when is_list(offers) do
+		company
+		|> Repo.preload(:offers)
+		|> Company.changeset_updating_offer(offers)
+		|> Repo.update()
+	end
+
+	# Flag specific:
+
+	def list_offers(%Flag{} = flag) do
+		flag = Repo.preload(flag, :offers)
+		flag.offers
 	end
 end

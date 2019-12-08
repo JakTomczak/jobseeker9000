@@ -12,12 +12,12 @@ defmodule Jobseeker9000.Jobs.FlagTest do
   @invalid_attrs %{
     name: nil
   }
+  @not_default_offer_url "pracuj.pl/oferta/not_default"
 
   describe "jobs . create/2 flag" do
     test "with valid data" do
       {:ok, %Jobs.Flag{} = flag} =
-        %{name: @dummy_name}
-        |> JobsHelpers.maybe_get_defaults(:flag)
+        JobsHelpers.maybe_get_defaults(:flag, %{name: @dummy_name})
         |> Jobs.create(:flag)
       assert flag.name == @dummy_name
     end
@@ -29,31 +29,23 @@ defmodule Jobseeker9000.Jobs.FlagTest do
 
   describe "jobs . change/2 flag" do
     setup do
-      {:ok, %Jobs.Flag{} = flag} =
-        JobsHelpers.maybe_get_defaults(:flag)
-        |> Jobs.create(:flag)
-      [flag: flag]
+      [flag: JobsHelpers.mock(:flag)]
     end
 
-    test "with valid data", context do
-      assert {:ok, %Jobs.Flag{name: @dummy_name}}
-        = Jobs.change(context[:flag], %{name: @dummy_name})
+    test "with valid data", %{flag: flag} do
+      assert {:ok, %Jobs.Flag{name: @dummy_name}} = Jobs.change(flag, %{name: @dummy_name})
     end
 
-    test "with invalid data", context do
-      assert {:error, %Ecto.Changeset{valid?: false}} = Jobs.change(context[:flag], @invalid_attrs)
+    test "with invalid data", %{flag: flag} do
+      assert {:error, %Ecto.Changeset{valid?: false}} = Jobs.change(flag, @invalid_attrs)
     end
   end
 
   describe "jobs . list/1 flag" do
     setup context do
       if context[:seed] == :yes do
-        %{calls: @calls1}
-        |> JobsHelpers.maybe_get_defaults(:flag)
-        |> Jobs.create(:flag)
-        %{calls: @calls2}
-        |> JobsHelpers.maybe_get_defaults(:flag)
-        |> Jobs.create(:flag)
+        JobsHelpers.mock(:flag, %{calls: @calls1})
+        JobsHelpers.mock(:flag, %{calls: @calls2})
       end
       :ok
     end
@@ -72,37 +64,54 @@ defmodule Jobseeker9000.Jobs.FlagTest do
 
   describe "jobs . get/2 flag" do
     setup do
-      {:ok, %Jobs.Flag{} = flag} =
-        JobsHelpers.maybe_get_defaults(:flag)
-        |> Jobs.create(:flag)
+      flag = JobsHelpers.mock(:flag)
       [id: flag.id, flag: flag]
     end
 
-    test "by valid id", context do
-      assert context[:flag] == Jobs.get(:flag, context[:id])
+    test "by valid id", %{id: id, flag: flag} do
+      assert flag == Jobs.get(:flag, id)
     end
 
-    test "by invalid id", context do
-      assert context[:id] != @wrong_id
+    test "by invalid id", %{id: id} do
+      assert id != @wrong_id
       assert nil == Jobs.get(:flag, @wrong_id)
     end
   end
 
   describe "jobs . get_by/2 flag" do
     setup do
-      {:ok, %Jobs.Flag{} = flag} =
-        %{name: @dummy_name}
-        |> JobsHelpers.maybe_get_defaults(:flag)
-        |> Jobs.create(:flag)
+      [ flag: JobsHelpers.mock(:flag, %{name: @dummy_name}) ]
+    end
+
+    test "when matched", %{flag: flag} do
+      assert flag == Jobs.get_by(:flag, name: @dummy_name)
+    end
+
+    test "when unmatched" do
+      assert is_nil( Jobs.get_by(:flag, name: @wrong_name) )
+    end
+  end
+
+  describe "jobs . flag . list_offers/1" do
+    setup context do
+      flag = JobsHelpers.mock(:flag)
+      if context[:seed] == :yes do
+        offer_1 = JobsHelpers.mock(:offer)
+        Jobs.set_flags(offer_1, flag)
+        offer_2 = JobsHelpers.mock(:offer, %{url: @not_default_offer_url})
+        Jobs.set_flags(offer_2, flag)
+      end
       [flag: flag]
     end
 
-    test "when matched", context do
-      assert context[:flag] == Jobs.get_by(:flag, name: @dummy_name)
+    @tag seed: :yes
+    test "when two records exist", %{flag: flag} do
+      assert [%Jobs.Offer{}, %Jobs.Offer{}] = Jobs.list_offers(flag)
     end
 
-    test "when wrongly matched" do
-      assert is_nil( Jobs.get_by(:flag, name: @wrong_name) )
+    @tag seed: :no
+    test "when no record exist", %{flag: flag} do
+      assert [] = Jobs.list_offers(flag)
     end
   end
 end

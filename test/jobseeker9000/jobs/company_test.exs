@@ -12,12 +12,12 @@ defmodule Jobseeker9000.Jobs.Companyest do
   @invalid_attrs %{
     name: nil
   }
+  @not_default_offer_url "pracuj.pl/oferta/not_default"
 
   describe "jobs . create/2 company" do
     test "with valid data" do
       {:ok, %Jobs.Company{} = company} =
-        %{name: @dummy_name}
-        |> JobsHelpers.maybe_get_defaults(:company)
+        JobsHelpers.maybe_get_defaults(:company, %{name: @dummy_name})
         |> Jobs.create(:company)
       assert company.name == @dummy_name
     end
@@ -29,31 +29,23 @@ defmodule Jobseeker9000.Jobs.Companyest do
 
   describe "jobs . change/2 company" do
     setup do
-      {:ok, %Jobs.Company{} = company} =
-        JobsHelpers.maybe_get_defaults(:company)
-        |> Jobs.create(:company)
-      [company: company]
+      [ company: JobsHelpers.mock(:company) ]
     end
 
-    test "with valid data", context do
-      assert {:ok, %Jobs.Company{name: @dummy_name}}
-        = Jobs.change(context[:company], %{name: @dummy_name})
+    test "with valid data", %{company: company} do
+      assert {:ok, %Jobs.Company{name: @dummy_name}} = Jobs.change(company, %{name: @dummy_name})
     end
 
-    test "with invalid data", context do
-      assert {:error, %Ecto.Changeset{valid?: false}} = Jobs.change(context[:company], @invalid_attrs)
+    test "with invalid data", %{company: company} do
+      assert {:error, %Ecto.Changeset{valid?: false}} = Jobs.change(company, @invalid_attrs)
     end
   end
 
   describe "jobs . list/1 company" do
     setup context do
       if context[:seed] == :yes do
-        %{url: @dummy_url_1}
-        |> JobsHelpers.maybe_get_defaults(:company)
-        |> Jobs.create(:company)
-        %{url: @dummy_url_2}
-        |> JobsHelpers.maybe_get_defaults(:company)
-        |> Jobs.create(:company)
+        JobsHelpers.mock(:company, %{url: @dummy_url_1})
+        JobsHelpers.mock(:company, %{url: @dummy_url_2})
       end
       :ok
     end
@@ -72,37 +64,62 @@ defmodule Jobseeker9000.Jobs.Companyest do
 
   describe "jobs . get/2 company" do
     setup do
-      {:ok, %Jobs.Company{} = company} =
-        JobsHelpers.maybe_get_defaults(:company)
-        |> Jobs.create(:company)
+      company = JobsHelpers.mock(:company)
       [id: company.id, company: company]
     end
 
-    test "by valid id", context do
-      assert context[:company] == Jobs.get(:company, context[:id])
+    test "by valid id", %{id: id, company: company} do
+      assert company == Jobs.get(:company, id)
     end
 
-    test "by invalid id", context do
-      assert context[:id] != @wrong_id
+    test "by invalid id", %{id: id} do
+      assert id != @wrong_id
       assert nil == Jobs.get(:company, @wrong_id)
     end
   end
 
   describe "jobs . get_by/2 company" do
     setup do
-      {:ok, %Jobs.Company{} = company} =
-        %{name: @dummy_name}
-        |> JobsHelpers.maybe_get_defaults(:company)
-        |> Jobs.create(:company)
-      [company: company]
+      [ company: JobsHelpers.mock(:company, %{name: @dummy_name}) ]
     end
 
-    test "when matched", context do
-      assert context[:company] == Jobs.get_by(:company, name: @dummy_name)
+    test "when matched", %{company: company} do
+      assert company == Jobs.get_by(:company, name: @dummy_name)
     end
 
-    test "when wrongly matched" do
+    test "when unmatched" do
       assert is_nil( Jobs.get_by(:company, name: @wrong_name) )
+    end
+  end
+
+  describe "jobs . company . link_offers/2" do
+    setup do
+      [
+        company: JobsHelpers.mock(:company),
+        offer_1: JobsHelpers.mock(:offer),
+        offer_2: JobsHelpers.mock(:offer, url: @not_default_offer_url)
+      ]
+    end
+
+    test "with one offer && relation is added both ways", %{company: company, offer_1: offer} do
+      assert {:ok, %Jobs.Company{offers: [offer]} = company} = Jobs.link_offers(company, offer)
+      assert company.id == offer.company_id
+    end
+
+    test "with many offers", context do
+      offers = [context[:offer_1], context[:offer_2]]
+      assert {:ok, %Jobs.Company{offers: offers}} = Jobs.link_offers(context[:company], offers)
+      assert 2 == length(offers)
+    end
+
+    test "try and fail when offers aren't offers", %{company: company} do
+      assert {:error, %Ecto.Changeset{valid?: false}} = Jobs.link_offers(company, [1, 2])
+    end
+
+    test "offers association is expanded, not replaced", %{company: company, offer_1: old_offer, offer_2: new_offer} do
+      {:ok, company} = Jobs.link_offers(company, old_offer)
+      {:ok, company} = Jobs.link_offers(company, new_offer)
+      assert 2 == length(company.offers)
     end
   end
 end
