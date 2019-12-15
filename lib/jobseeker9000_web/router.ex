@@ -17,6 +17,8 @@ defmodule Jobseeker9000Web.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    resources "/flag", FlagController#, only: [:index, :new, :create, :edit, :update]
   end
 
   # Other scopes may use custom stacks.

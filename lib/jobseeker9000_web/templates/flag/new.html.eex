@@ -1,0 +1,10 @@
+<h1>New flag</h1>
+<%= form_for @changeset, Routes.flag_path(@conn, :create), fn field -> %>
+<div>
+<%= text_input field, :name, placeholder: "Name" %>
+</div>
+<div>
+<%= text_input field, :calls, placeholder: "Calls" %>
+</div>
+<%= submit "Create flag" %>
+<% end %>

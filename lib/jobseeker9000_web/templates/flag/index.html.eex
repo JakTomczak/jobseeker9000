@@ -1,0 +1,11 @@
+<h1>All flags</h1>
+<div>
+<%= link "New flag", to: Routes.flag_path(@conn, :new) %>
+</div>
+<ul>
+<%= for flag <- @flags do %>
+  <li>
+  <b><%= link flag.name, to: Routes.flag_path(@conn, :edit, flag.id) %></b> - <span><%=flag.calls %></span>
+  </li>
+<% end %>
+</ul>

@@ -1,0 +1,9 @@
+<h2>Edit flag: <%= @flag.name %></h2>
+
+<%= form_for @changeset, Routes.flag_path(@conn, :update, @flag.id), fn field -> %>
+<div>
+<%= text_input field, :calls, placeholder: "Calls" %>
+</div>
+<%= submit "Update flag" %>
+<% end %>
+<%= link "Delete flag", to: Routes.flag_path(@conn, :delete, @flag), method: :delete, data: [confirm: "Are you sure?"] %>
