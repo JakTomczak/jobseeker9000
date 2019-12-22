@@ -1,17 +1,7 @@
 defmodule Jobseeker9000Web.PageController do
   use Jobseeker9000Web, :controller
-  alias Jobseeker9000.Poisoner
-  alias Jobseeker9000.Floker
+  alias Jobseeker9000.Jobseeker9000
   # import Enum
-
-  defp run() do
-    case Poisoner.poison_pracuj() do
-      {:ok, body: body} ->
-        Floker.floking(:pracuj, body)
-      {:error, reason: reason} ->
-        IO.inspect reason
-    end
-  end
 
   defp test() do
     y = 2
@@ -25,6 +15,6 @@ defmodule Jobseeker9000Web.PageController do
 
   def index(conn, _params) do
     # IO.puts "starting"
-    render(conn, "index.html", res: run())
+    render(conn, "index.html", res: Jobseeker9000.big_search(:pracuj))
   end
 end
