@@ -14,21 +14,29 @@ defmodule Jobseeker9000.Floker.FlokerHelpers do
   end
 
   @doc """
-  Finds the url of the offer.
+  Finds the url.
   Returns error if no hyperlink is found within given marker
     or if more than one such hyperlink is found.
   """
   def get_href(html, %{a_class: a_class}) do
-    nodes = Floki.attribute(html, "a.#{a_class}", "href")
+    Floki.attribute(html, "a.#{a_class}", "href")
+    |> get_one_href(" with class #{a_class}")
+  end
+  def get_href(html) do
+    Floki.attribute(html, "a", "href")
+    |> get_one_href("")
+  end
+
+  defp get_one_href(nodes, custom_message) do
     case length(nodes) do
       0 -> 
-        raise RuntimeError, message: "No a with class '#{a_class}' found"
+        raise RuntimeError, message: "No 'a'#{custom_message} found"
 
       1 -> 
         unpack!(nodes)
 
       _more -> 
-        raise RuntimeError, message: "There exists more than one 'a' with class '#{a_class}'"
+        raise RuntimeError, message: "There exists more than one 'a'#{custom_message}"
     end
   end
 
