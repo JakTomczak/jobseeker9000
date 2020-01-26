@@ -20,7 +20,7 @@ defmodule Jobseeker9000Web.PageController do
 
   def index(conn, _params) do
     # IO.puts "starting"
-    # render(conn, "index.html", res: Jobseeker9000.big_search(:pracuj))
-    render(conn, "index.html", res: test())
+    render(conn, "index.html", res: Jobseeker9000.test_search(:pracuj))
+    # render(conn, "index.html", res: test())
   end
 end

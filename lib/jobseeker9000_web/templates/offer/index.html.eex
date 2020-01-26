@@ -1,0 +1,8 @@
+<h1>All offers</h1>
+<ul>
+<%= for offer <- @offers do %>
+  <li>
+  <b><%= link offer.name, to: Routes.offer_path(@conn, :edit, offer.id) %></b>
+  </li>
+<% end %>
+</ul>

@@ -19,6 +19,7 @@ defmodule Jobseeker9000.Floker do
     init(what, context)
     |> get_index()
     |> Search.run()
+    |> offer_scrapper()
   end
 
   def poison!(url) do
@@ -44,13 +45,15 @@ defmodule Jobseeker9000.Floker do
     %{floker | full_html: body}
   end
 
-  defp offer_scrapper(%__MODULE__{results: []} = floker), do: :ok   
-  defp offer_scrapper(%__MODULE__{results: [offer | tail]} = floker) do
-    %OfferScrapper{
-      offer: offer,
-      context: floker.context,
-      module: floker.module
-    }
-    |> OfferScrapper.run()
+  defp offer_scrapper(%__MODULE__{state: :error} = floker), do: floker
+  defp offer_scrapper(%__MODULE__{results: results} = floker) do
+    for offer <- results do
+      %OfferScrapper{
+        context: floker.context,
+        module: floker.module,
+        offer: offer
+      }
+      |> OfferScrapper.run()
+    end
   end
 end

@@ -53,11 +53,7 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
   end
 
   def offer_employer_url(html) do
-    # IO.inspect html
-    [div] = 
-      Floki.find(html, "[data-test=section-employer-profile]")
-    IO.puts inspect(div)
-    FlokerHelpers.get_href(div)
+    nil
   end
 
   def offer_status(div) do

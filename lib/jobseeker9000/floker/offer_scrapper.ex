@@ -57,7 +57,10 @@ defmodule Jobseeker9000.Floker.OfferScrapper do
     end
   end
 
-  defp basic_info(%__MODULE__{state: :error} = scrapper), do: scrapper
+  defp basic_info(%__MODULE__{state: :error} = scrapper) do
+    {:error, scrapper.error_text}
+  end
+  
   defp basic_info(%__MODULE__{} = scrapper) do
     name_selector = apply(scrapper.module, :name_selector, [])
     [{_h1, _options, offer_name}] =
@@ -80,6 +83,16 @@ defmodule Jobseeker9000.Floker.OfferScrapper do
     [actual_offer_div] = 
       Floki.find(scrapper.full_html, actual_offer_selector)
 
-    actual_offer_div
+    offer = %{
+      name: offer_name,
+      employer_url: employer_url,
+      status: offer_status, 
+      from: offer_from,
+      ending: offer_ending,
+      address_text: address_text,
+      offer_div: actual_offer_div
+    }
+
+    {:ok, offer}
   end
 end
