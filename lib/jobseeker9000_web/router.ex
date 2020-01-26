@@ -19,6 +19,10 @@ defmodule Jobseeker9000Web.Router do
     get "/", PageController, :index
 
     resources "/flag", FlagController#, only: [:index, :new, :create, :edit, :update]
+
+    resources "/offer", OfferController, only: [:index, :edit, :update]
+
+    post "/search", SearchController, :search
   end
 
   # Other scopes may use custom stacks.

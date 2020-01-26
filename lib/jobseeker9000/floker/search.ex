@@ -12,7 +12,6 @@ defmodule Jobseeker9000.Floker.Search do
     |> find_lis()
     |> FlokerHelpers.test_on_first()
     |> li_crawler()
-    "ok"
   end
 
   @doc """

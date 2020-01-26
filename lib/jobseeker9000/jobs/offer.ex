@@ -25,4 +25,10 @@ defmodule Jobseeker9000.Jobs.Offer do
 		|> changeset(%{})
 		|> put_assoc(:flags, flags)
 	end
+
+	def changeset_putting_new_flag(offer, flag) do
+		offer
+		|> change()
+		|> put_assoc(:flags, [flag | offer.flags])
+	end
 end

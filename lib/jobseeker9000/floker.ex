@@ -11,6 +11,7 @@ defmodule Jobseeker9000.Floker do
   alias Jobseeker9000.Floker.Poisoner
   alias Jobseeker9000.Floker.Websites
   alias Jobseeker9000.Floker.Search
+  alias Jobseeker9000.Floker.OfferScrapper
 
   def poison_wrapper()
 
@@ -18,6 +19,7 @@ defmodule Jobseeker9000.Floker do
     init(what, context)
     |> get_index()
     |> Search.run()
+    |> offer_scrapper()
   end
 
   def poison!(url) do
@@ -41,5 +43,17 @@ defmodule Jobseeker9000.Floker do
     url = Websites.search_url(floker.context, floker.module)
     body = poison!(url)
     %{floker | full_html: body}
+  end
+
+  defp offer_scrapper(%__MODULE__{state: :error} = floker), do: floker
+  defp offer_scrapper(%__MODULE__{results: results} = floker) do
+    for offer <- results do
+      %OfferScrapper{
+        context: floker.context,
+        module: floker.module,
+        offer: offer
+      }
+      |> OfferScrapper.run()
+    end
   end
 end
