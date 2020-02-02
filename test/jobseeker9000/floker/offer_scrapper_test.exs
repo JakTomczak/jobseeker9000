@@ -4,6 +4,8 @@ defmodule Jobseeker9000.Floker.OfferScrapperTest do
   alias Jobseeker9000.Floker.OfferScrapper
 
   describe "offer_scrapper . test_run/3" do
+
+    @tag :skip
     test "well... yes, test run" do
       offer = %{
       relative_link: "/praca/elektromechanik-poznan,oferta,7319844", 

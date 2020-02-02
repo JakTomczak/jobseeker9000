@@ -15,7 +15,7 @@ defmodule Jobseeker9000.Floker do
 
   def poison_wrapper()
 
-  def run(what, context) do
+  def scrap_by_context(what, context) do
     init(what, context)
     |> get_index()
     |> Search.run()
@@ -29,6 +29,12 @@ defmodule Jobseeker9000.Floker do
       {:error, reason} ->
         raise RuntimeError, message: "Error occured with reason: #{reason}"
     end
+  end
+
+  def only_search(what, context) do
+    init(what, context)
+    |> get_index()
+    |> Search.run()
   end
 
   defp init(what, context) do

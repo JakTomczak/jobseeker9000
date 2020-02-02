@@ -3,7 +3,7 @@ defmodule Jobseeker9000.Jobseeker9000 do
 
   def test_search(what) do
     context = %{options: [{:include, :remote}]}
-    Jobseeker9000.Floker.run(what, context)
+    Jobseeker9000.Floker.scrap_by_context(what, context)
     |> inspect()
   rescue 
     e in RuntimeError ->

@@ -1,6 +1,16 @@
 defmodule Jobseeker9000.Floker.Websites.Pracuj do
   alias Jobseeker9000.Floker.FlokerHelpers
 
+  def any_found?(html) do
+    html
+    |> Floki.find(".results-header.results-header__no-offers")
+    |> length()
+    |> case do
+      0 -> true
+      _ -> false 
+    end
+  end
+
   def index() do
     "https://www.pracuj.pl/praca"
   end
@@ -12,6 +22,8 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
   def include(:remote) do
     "rw=true"
   end
+
+  
   
   @doc """
   The html marker that holds all information needed for scrapping.

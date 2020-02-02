@@ -6,6 +6,12 @@ defmodule Jobseeker9000.Floker.Websites do
     @modules[what]
   end
 
+  def available_websites() do
+    [
+      :pracuj
+    ]
+  end
+
   def search_url(%{options: []}, module) do
      apply(module, :index, [])
   end
