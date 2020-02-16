@@ -1,13 +1,15 @@
 defmodule Jobseeker9000.Floker.Context do
-  defstruct place: %{type: nil},
-            keys: [],
+  defstruct place: nil,
+            radius: nil,
+            remote: false,
+            categories: [],
+            keywords: [],
             employment_type: nil,
-            salary_min: %{currency: nil}
-
-  alias Jobseeker9000.Floker.Websites 
+            salary_min: nil
 
   def make(list_of_flags) do
-    make(%__MODULE__{}, list_of_flags)
+    %__MODULE__{}
+    |> make(list_of_flags)
   end
 
   def make(%__MODULE__{} = context, []), do: context
@@ -31,32 +33,41 @@ defmodule Jobseeker9000.Floker.Context do
     make(context, the_rest)
   end
 
+  def get_not_empty(%__MODULE__{} = context) do
+    map = %{
+      place: not is_nil(context.place),
+      radius: not is_nil(context.place),
+      remote: context.remote,
+      categories: [] != context.categories,
+      keywords: [] != context.keywords,
+      employment_type: not is_nil(context.employment_type),
+      salary_min: not is_nil(context.salary_min)
+    }
+    :maps.filter(fn _key, value -> value end, map)
+    |> Map.keys()
+  end
+
   defp add_remote(context, flag) do
     %{
       context |
-      place: %{type: :remote}
+      remote: true
     }
   end
 
   defp add_place(context, flag) do
     %{
       context |
-      place: %{
-        type: :place,
-        name: flag.name,
-        latitude: flag.latitude,
-        longitude: flag.longitude,
-        radius: flag.radius
-      }
+      place: flag.name,
+      radius: flag.radius
     }
   end
 
   defp add_category(context, flag) do
     %{
       context |
-      keys: [
-        %{type: :category, name: flag.name} | 
-        context.keys
+      categories: [
+        flag.calls | 
+        context.categories
       ]
     }
   end
@@ -64,9 +75,9 @@ defmodule Jobseeker9000.Floker.Context do
   defp add_keyword(context, flag) do
     %{
       context |
-      keys: [
-        %{type: :keyword, calls: flag.calls} | 
-        context.keys
+      keywords: [
+        flag.name | 
+        context.keywords
       ]
     }
   end
@@ -81,10 +92,7 @@ defmodule Jobseeker9000.Floker.Context do
   defp add_salary(context, flag) do
     %{
       context |
-      salary_min: %{
-        amount: flag.amount,
-        currency: flag.currency
-      }
+      salary_min: flag.calls
     }
   end
 end

@@ -11,19 +11,92 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
     end
   end
 
+  def url_order() do
+    [
+      :keywords,
+      :place,
+      :categories,
+      :question_mark,
+      :radius,
+      :salary_min,
+      :remote,
+      :employment_type
+    ]
+  end
+
   def index() do
-    "https://www.pracuj.pl/praca"
+    "https://www.pracuj.pl/praca/"
   end
   
   def offer_base() do
     "https://www.pracuj.pl"
   end
 
-  def include(:remote) do
+  def url_include(:remote) do
     "rw=true"
   end
 
-  
+  def url_include(:place, place) do
+    "rw=true"
+  end
+
+  def url_query(atom, context) when is_list(context) do
+    url_query(atom, context, "")
+  end
+
+  def url_query(:keywords, [], url), do: url
+
+  def url_query(:keywords, [keyword | the_rest], url) do
+    url = url <> "#{keyword};kw/"
+
+    url_query(:keywords, the_rest, url)
+  end
+
+  def url_query(:place, name) do
+    "#{name};wp/"
+  end
+
+  def url_query(:categories, [], url), do: url
+
+  def url_query(:categories, [calls | the_rest], url) do
+    call = calls["pracuj"] || calls["default"]
+
+    if is_nil(call) do
+      url_query(:categories, the_rest, url)
+    else
+      url = url <> call <> "/"
+
+      url_query(:categories, the_rest, url)
+    end
+  end
+
+  def url_query(:question_mark, nil), do: "?"
+
+  def url_query(:radius, radius) do
+    "rd=#{radius}&"
+  end
+
+  def url_query(:salary_min, salary) do
+    amount = salary["pracuj"] || salary["default"]
+
+    if is_nil(amount) do
+      ""
+    else
+      "sal=#{amount}&"
+    end
+  end
+
+  def url_query(:remote, true) do
+    "rw=true&"
+  end
+
+  def url_query(:employment_type, "Full time") do
+    "ws=0&"
+  end
+
+  def url_query(:employment_type, "Part time") do
+    "ws=1&"
+  end
   
   @doc """
   The html marker that holds all information needed for scrapping.

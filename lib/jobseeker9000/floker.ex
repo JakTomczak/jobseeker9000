@@ -53,13 +53,16 @@ defmodule Jobseeker9000.Floker do
 
   defp offer_scrapper(%__MODULE__{state: :error} = floker), do: floker
   defp offer_scrapper(%__MODULE__{results: results} = floker) do
-    for offer <- results do
-      %OfferScrapper{
-        context: floker.context,
-        module: floker.module,
-        offer: offer
-      }
-      |> OfferScrapper.run()
-    end
+    offers = 
+      for offer <- results do
+        %OfferScrapper{
+          context: floker.context,
+          module: floker.module,
+          offer: offer
+        }
+        |> OfferScrapper.run()
+      end
+      
+    offers
   end
 end

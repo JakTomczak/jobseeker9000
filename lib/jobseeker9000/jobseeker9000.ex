@@ -1,8 +1,12 @@
 defmodule Jobseeker9000.Jobseeker9000 do
   alias Jobseeker9000.Jobs
+  alias Jobseeker9000.Floker.Context
 
   def test_search(what) do
-    context = %{options: [{:include, :remote}]}
+    context = Context.make([%{
+      name: "Remote",
+      type: "remote"
+    }])
     Jobseeker9000.Floker.scrap_by_context(what, context)
     |> inspect()
   rescue 
@@ -11,6 +15,6 @@ defmodule Jobseeker9000.Jobseeker9000 do
   end
 
   def search_by_flag(%Jobs.Flag{} = flag) do
-    
+    context = Context.make([flag])
   end
 end

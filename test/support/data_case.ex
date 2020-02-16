@@ -22,6 +22,81 @@ defmodule Jobseeker9000.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Jobseeker9000.DataCase
+
+      @remote %{
+        name: "Remote",
+        type: "remote"
+      }
+
+      @poznan %{
+        name: "Poznań",
+        type: "place",
+        latitude: 52.406374,
+        longitude: 16.925168100000064,
+        radius: 5
+      }
+
+      @warszawa %{
+        name: "Warszawa",
+        type: "place",
+        latitude: 52.2296756,
+        longitude: 21.012228700000037,
+        radius: 10
+      }
+
+      @berlin %{
+        name: "Berlin",
+        type: "place",
+        latitude: 52.52000659999999,
+        longitude: 13.404953999999975,
+        radius: 15
+      }
+      
+      @programming %{
+        calls: %{
+          "default" => "Programming",
+          "pracuj" => "programowanie;cc,5016003"
+        },
+        type: "category"
+      }
+      
+      @elixir %{
+        name: "Elixir",
+        type: "keyword"
+      }
+
+      @matlab %{
+        name: "Matlab",
+        type: "keyword"
+      }
+
+      @full_time %{
+        name: "Full time",
+        type: "employment_type"
+      }
+
+      @part_time %{
+        name: "Part time",
+        type: "employment_type"
+      }
+
+      @dollars_2000 %{
+        name: "More than $2000",
+        type: "salary",
+        calls: %{
+          "default" => 2000,
+          "pracuj" => 7500
+        }
+      }
+
+      @euro_2500 %{
+        name: "More than 2500 €",
+        type: "salary",
+        calls: %{
+          "default" => 2750,
+          "pracuj" => 1150
+        }
+      }
     end
   end
 
