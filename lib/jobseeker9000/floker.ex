@@ -13,7 +13,7 @@ defmodule Jobseeker9000.Floker do
   alias Jobseeker9000.Floker.Search
   alias Jobseeker9000.Floker.OfferScrapper
 
-  def poison_wrapper()
+  # def poison_wrapper()
 
   def scrap_by_context(what, context) do
     init(what, context)
