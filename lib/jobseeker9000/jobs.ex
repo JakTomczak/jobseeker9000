@@ -35,11 +35,6 @@ defmodule Jobseeker9000.Jobs do
 		|> Flag.changeset(params)
 		|> Repo.insert()
 	end
-	def create(params, :company) do
-		%Company{}
-		|> Company.changeset(params)
-		|> Repo.insert()
-	end
 
 	# Offer specific:
 
