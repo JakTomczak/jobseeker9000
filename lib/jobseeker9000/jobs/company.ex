@@ -25,15 +25,16 @@ defmodule Jobseeker9000.Jobs.Company do
 		
 		def changeset(company, params) do
 			company
-			|> cast(params, @fields])
-			|> validate_required(@fields)
+			|> cast(params, @schema_fields)
+			|> validate_required(@schema_fields)
+			|> unique_constraint(:url, name: :url_of_the_company)
 		end
 
-		def add_new_offers_changeset(company, offers) do
-			company
-			|> change()
-			|> put_assoc(:offers, offers ++ company.offers)
-		end
+		# def add_new_offers_changeset(company, offers) do
+		# 	company
+		# 	|> change()
+		# 	|> put_assoc(:offers, offers ++ company.offers)
+		# end
 	end
 
 	@type t :: %Schema{
@@ -42,10 +43,49 @@ defmodule Jobseeker9000.Jobs.Company do
 		url: :string
 	}
 
+	@doc """
+	Creates a Company from params.
+	"""
 	@spec create(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
 	def create(params) do
 		%Schema{}
 		|> Schema.changeset(params)
 		|> Repo.insert()
 	end
+
+	@doc """
+	Gets the Company from id.
+	"""
+	@spec get(binary()) :: {:ok, t()} | {:error, :not_found} | {:error, :nil_given}
+	def get(nil), do: {:error, :nil_given}
+
+	def get(id) do
+		Schema
+		|> Repo.get(id)
+		|> case do
+			nil -> {:error, :not_found}
+
+			company -> {:ok, company}
+		end
+	end
+
+	@doc """
+	List all Companies.
+	"""
+	@spec list() :: [t()]
+	def list() do
+		Schema
+		|> Repo.all()
+	end
+
+	# @doc """
+	# Make given list of Offers children of given Company.
+	# """
+	# @spec add_new_offers(t(), [Ecto.Schema.t()]) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+	# def add_new_offers(%Schema{} = company, offers) when is_list(offers) do
+	# 	company
+	# 	|> Repo.preload(:offers)
+	# 	|> Schema.add_new_offers_changeset(offers)
+	# 	|> Repo.update()
+	# end
 end

@@ -1,6 +1,5 @@
 defmodule Jobseeker9000.Jobs.Offer do
-	use Ecto.Schema
-	import Ecto.Changeset
+	use Jobseeker9000.Model
   alias Jobseeker9000.Repo
 	
 	schema "offer" do
@@ -10,7 +9,7 @@ defmodule Jobseeker9000.Jobs.Offer do
 		field :found_on, :string
 		field :url, :string
     field :state, :string
-		belongs_to :company, Jobseeker9000.Jobs.Company
+		belongs_to :company, Jobseeker9000.Jobs.Company.Schema
     many_to_many :flags, Jobseeker9000.Jobs.Flag, join_through: "offers_flags", on_replace: :delete
 	end
 	

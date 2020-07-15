@@ -20,6 +20,8 @@ defmodule Jobseeker9000Web.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      import Jobseeker9000.Factory
+
       # The default endpoint for testing
       @endpoint Jobseeker9000Web.Endpoint
     end

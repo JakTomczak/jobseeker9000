@@ -21,6 +21,8 @@ defmodule Jobseeker9000Web.ConnCase do
       use Phoenix.ConnTest
       alias Jobseeker9000Web.Router.Helpers, as: Routes
 
+      import Jobseeker9000.Factory
+
       # The default endpoint for testing
       @endpoint Jobseeker9000Web.Endpoint
     end

@@ -44,7 +44,8 @@ defmodule Jobseeker9000.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 1.6"},
-      {:floki, "~> 0.23.0"}
+      {:floki, "~> 0.23.0"},
+      {:ex_machina, "~> 2.4", only: :test}
     ]
   end
 

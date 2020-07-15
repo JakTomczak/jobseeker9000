@@ -23,6 +23,8 @@ defmodule Jobseeker9000.DataCase do
       import Ecto.Query
       import Jobseeker9000.DataCase
 
+      import Jobseeker9000.Factory
+
       @remote %{
         name: "Remote",
         type: "remote"

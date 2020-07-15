@@ -10,19 +10,15 @@ defmodule Jobseeker9000.Jobs do
 
 	def get(:offer, id), do: Repo.get(Offer, id)
 	def get(:flag, id), do: Repo.get(Flag, id)
-	def get(:company, id), do: Repo.get(Company, id)
 
 	def get_by(:offer, params), do: Repo.get_by(Offer, params)
 	def get_by(:flag, params), do: Repo.get_by(Flag, params)
-	def get_by(:company, params), do: Repo.get_by(Company, params)
 
 	def list(:offer), do: Offer |> order_by(asc: :from) |> Repo.all()
 	def list(:flag), do: Flag |> Repo.all()
-	def list(:company), do: Company |> Repo.all()
 
 	def change(%Offer{} = offer, params), do: Offer.changeset(offer, params) |> Repo.update()
 	def change(%Flag{} = flag, params), do: Flag.changeset(flag, params) |> Repo.update()
-	def change(%Company{} = company, params), do: Company.changeset(company, params) |> Repo.update()
 
 	def create(params \\ %{}, what)
 	def create(params, :offer) do
@@ -64,14 +60,6 @@ defmodule Jobseeker9000.Jobs do
 	end
 
 	# Company specific:
-
-	def link_offers(%Company{} = company, %Offer{} = offer), do: link_offers(company, [offer])
-	def link_offers(%Company{} = company, offers) when is_list(offers) do
-		company
-		|> Repo.preload(:offers)
-		|> Company.changeset_updating_offer(offers)
-		|> Repo.update()
-	end
 
 	# Flag specific:
 

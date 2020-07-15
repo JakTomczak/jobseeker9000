@@ -1,6 +1,5 @@
 defmodule Jobseeker9000.Jobs.Flag do
-	use Ecto.Schema
-	import Ecto.Changeset
+	use Jobseeker9000.Model
 	
 	schema "flag" do
 		field :name, :string
