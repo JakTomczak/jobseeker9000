@@ -16,7 +16,7 @@ defmodule Jobseeker9000.Jobs.CompanyTest do
     test "with valid data" do
       params = @company
 
-      assert {:ok, %Schema{name: @dummy_name} = company} = Company.create(params)
+      assert {:ok, %Schema{name: @dummy_name}} = Company.create(params)
     end
 
     test "with invalid data" do

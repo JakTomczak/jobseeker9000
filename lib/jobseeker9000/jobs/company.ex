@@ -1,6 +1,8 @@
 defmodule Jobseeker9000.Jobs.Company do
 	alias Jobseeker9000.Repo
 	import Ecto.Query, except: [update: 2]
+	
+	alias Jobseeker9000.Jobs.Offer
 
 	@moduledoc """
 	Company which makes a job offer.
@@ -14,7 +16,7 @@ defmodule Jobseeker9000.Jobs.Company do
 			field :name, :string
 			field :found_on, :string
 			field :url, :string
-			has_many :offers, Jobseeker9000.Jobs.Offer, foreign_key: :company_id
+			has_many :offers, Offer.Schema, foreign_key: :company_id
 		end
 
 		@schema_fields [
@@ -38,9 +40,10 @@ defmodule Jobseeker9000.Jobs.Company do
 	end
 
 	@type t :: %Schema{
-		name: :string,
-		found_on: :string,
-		url: :string
+		name: String.t(),
+		found_on: String.t(),
+		url: String.t(),
+		offers: [Offer.t()]
 	}
 
 	@doc """

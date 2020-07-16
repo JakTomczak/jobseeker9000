@@ -14,7 +14,7 @@ defmodule Jobseeker9000.Jobseeker9000 do
       inspect(e)
   end
 
-  def search_by_flag(%Jobs.Flag{} = flag) do
+  def search_by_flag(%Jobs.Flag.Schema{} = flag) do
     context = Context.make([flag])
   end
 end
