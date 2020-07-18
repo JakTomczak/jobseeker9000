@@ -3,8 +3,8 @@ defmodule Jobseeker9000.Floker.Search do
   alias Jobseeker9000.Floker.FlokerHelpers
 
   @test """
- <body><div id="results" class="example"><li class="results__list-container-item"><a class="lol" href="abba">abba</a></li><li class="results__list-container-item"><a href="ojcze">ojcze</a></li></div></body>
- """
+  <body><div id="results" class="example"><li class="results__list-container-item"><a class="lol" href="abba">abba</a></li><li class="results__list-container-item"><a href="ojcze">ojcze</a></li></div></body>
+  """
 
   def run(%Floker{} = floker) do
     floker
@@ -19,17 +19,19 @@ defmodule Jobseeker9000.Floker.Search do
   If bigcontainer is not found, returns an error.
   """
   defp get_results(%Floker{state: :error} = floker), do: floker
+
   defp get_results(%Floker{full_html: html} = floker) do
     bigcontainer = apply(floker.module, :bigcontainer, [])
 
     case Floki.find(html, bigcontainer) do
-      [] -> 
+      [] ->
         %{
-          floker | 
-          state: :error, 
-          error_text: "Bigcontainer node: '#{bigcontainer}' not found."
+          floker
+          | state: :error,
+            error_text: "Bigcontainer node: '#{bigcontainer}' not found."
         }
-      div -> 
+
+      div ->
         %{floker | full_html: div}
     end
   end
@@ -38,10 +40,11 @@ defmodule Jobseeker9000.Floker.Search do
   Scraps bigcontainer to find list of one_result_container-s.
   """
   defp find_lis(%Floker{state: :error} = floker), do: floker
+
   defp find_lis(%Floker{full_html: html} = floker) do
     one_result_container = apply(floker.module, :one_result_container, [])
 
-    %{ floker | all_the_lis: Floki.find(html, one_result_container) }
+    %{floker | all_the_lis: Floki.find(html, one_result_container)}
   end
 
   @doc """
@@ -50,24 +53,22 @@ defmodule Jobseeker9000.Floker.Search do
   """
   defp li_crawler(%Floker{state: :error} = floker), do: floker
   defp li_crawler(%Floker{all_the_lis: []} = floker), do: floker
-  defp li_crawler(%Floker{all_the_lis: [head | tail]} = floker) do
 
+  defp li_crawler(%Floker{all_the_lis: [head | tail]} = floker) do
     case for_each_li(floker.module, head) do
       {:ok, offer} ->
-        li_crawler( 
-          %{ 
-            floker | 
-            all_the_lis: tail, 
-            results: [offer | floker.results] 
-          } 
-        )
+        li_crawler(%{
+          floker
+          | all_the_lis: tail,
+            results: [offer | floker.results]
+        })
 
       {:error, error_text} ->
-        %{ 
-          floker | 
-          state: :error, 
-          error_text: error_text, 
-          error_values: %{scope: head}
+        %{
+          floker
+          | state: :error,
+            error_text: error_text,
+            error_values: %{scope: head}
         }
     end
   end
@@ -77,14 +78,15 @@ defmodule Jobseeker9000.Floker.Search do
   """
   defp for_each_li(module, {_, _, [inside]}) do
     search_atom = apply(module, :search_atom, [])
+
     case Floki.find(inside, search_atom) do
-      [] -> 
+      [] ->
         {
-          :error, 
+          :error,
           "No div with class '#{search_atom}' found."
         }
 
-      [div] -> 
+      [div] ->
         extract_basic_info_from_div(module, div)
     end
   end
@@ -95,25 +97,27 @@ defmodule Jobseeker9000.Floker.Search do
   defp extract_basic_info_from_div(module, div) do
     search_item_a = apply(module, :search_item_a, [])
 
-    relative_link = FlokerHelpers.get_href( 
-      div, 
-      %{a_class: search_item_a} 
-    )
-    
-    full_link = 
+    relative_link =
+      FlokerHelpers.get_href(
+        div,
+        %{a_class: search_item_a}
+      )
+
+    full_link =
       FlokerHelpers.full_link_from_relative(
         module,
         relative_link
       )
-    
+
     id = apply(module, :id_from_relative_href, [relative_link])
 
-    {:ok, %{
-      relative_link: relative_link, 
-      full_link: full_link, 
-      id: id
-    }}
-  rescue 
+    {:ok,
+     %{
+       relative_link: relative_link,
+       full_link: full_link,
+       id: id
+     }}
+  rescue
     e in RuntimeError ->
       {:error, e}
   end

@@ -11,6 +11,7 @@ defmodule Jobseeker9000.Repo.Migrations.CreateOffer do
       add :state, :string
       add :company_id, references(:company)
     end
+
     create unique_index(:offer, [:url], name: :url_of_the_offer)
   end
 end

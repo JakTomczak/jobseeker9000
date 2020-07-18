@@ -9,6 +9,7 @@ defmodule Jobseeker9000.Floker.FlokerHelpers do
   """
   def test_on_first(%Floker{state: :error} = floker), do: floker
   def test_on_first(%Floker{all_the_lis: []} = floker), do: floker
+
   def test_on_first(%Floker{all_the_lis: [h | _]} = floker) do
     %{floker | all_the_lis: [h]}
   end
@@ -22,6 +23,7 @@ defmodule Jobseeker9000.Floker.FlokerHelpers do
     Floki.attribute(html, "a.#{a_class}", "href")
     |> get_one_href(" with class #{a_class}")
   end
+
   def get_href(html) do
     Floki.attribute(html, "a", "href")
     |> get_one_href("")
@@ -29,13 +31,13 @@ defmodule Jobseeker9000.Floker.FlokerHelpers do
 
   defp get_one_href(nodes, custom_message) do
     case length(nodes) do
-      0 -> 
+      0 ->
         raise RuntimeError, message: "No 'a'#{custom_message} found"
 
-      1 -> 
+      1 ->
         unpack!(nodes)
 
-      _more -> 
+      _more ->
         raise RuntimeError, message: "There exists more than one 'a'#{custom_message}"
     end
   end

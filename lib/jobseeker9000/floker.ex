@@ -26,6 +26,7 @@ defmodule Jobseeker9000.Floker do
     case Poisoner.get_body(url) do
       {:ok, body} ->
         body
+
       {:error, reason} ->
         raise RuntimeError, message: "Error occured with reason: #{reason}"
     end
@@ -41,7 +42,7 @@ defmodule Jobseeker9000.Floker do
     %__MODULE__{
       state: :ok,
       context: context,
-      module: Websites.module(what),
+      module: Websites.module(what)
     }
   end
 
@@ -52,8 +53,9 @@ defmodule Jobseeker9000.Floker do
   end
 
   defp offer_scrapper(%__MODULE__{state: :error} = floker), do: floker
+
   defp offer_scrapper(%__MODULE__{results: results} = floker) do
-    offers = 
+    offers =
       for offer <- results do
         %OfferScrapper{
           context: floker.context,
@@ -62,7 +64,7 @@ defmodule Jobseeker9000.Floker do
         }
         |> OfferScrapper.run()
       end
-      
+
     offers
   end
 end

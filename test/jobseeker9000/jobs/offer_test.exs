@@ -10,11 +10,11 @@ defmodule Jobseeker9000.Jobs.OfferTest do
     "name" => @dummy_name,
     "from" => ~D[2020-07-16],
     "ending" => ~D[2020-08-16],
-		"found_on" => "pracuj",
-		"url" => "pracuj.pl/oferta/1",
-		"state" => "open"
+    "found_on" => "pracuj",
+    "url" => "pracuj.pl/oferta/1",
+    "state" => "open"
   }
-  
+
   describe "Offer create/2" do
     test "with valid data" do
       company = insert(:company)
@@ -28,13 +28,13 @@ defmodule Jobseeker9000.Jobs.OfferTest do
 
       params = Map.delete(@offer, "name")
       assert {:error, _changeset} = Offer.create(company, params)
-      
+
       params = Map.delete(@offer, "from")
       assert {:error, _changeset} = Offer.create(company, params)
-      
+
       params = Map.delete(@offer, "found_on")
       assert {:error, _changeset} = Offer.create(company, params)
-      
+
       params = Map.delete(@offer, "url")
       assert {:error, _changeset} = Offer.create(company, params)
     end

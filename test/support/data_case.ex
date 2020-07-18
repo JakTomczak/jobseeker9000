@@ -53,7 +53,7 @@ defmodule Jobseeker9000.DataCase do
         longitude: 13.404953999999975,
         radius: 15
       }
-      
+
       @programming %{
         calls: %{
           "default" => "Programming",
@@ -61,7 +61,7 @@ defmodule Jobseeker9000.DataCase do
         },
         type: "category"
       }
-      
+
       @elixir %{
         name: "Elixir",
         type: "keyword"

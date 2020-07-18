@@ -1,5 +1,5 @@
 defmodule Jobseeker9000.Utils do
-  alias Jobseeker9000.Floker.Websites 
+  alias Jobseeker9000.Floker.Websites
   # def module(what) do
   #   @modules[what]
   # end
@@ -8,7 +8,7 @@ defmodule Jobseeker9000.Utils do
   # def assumptions_check() do
   #   for flag <- Jobs.list(:flag) do
   #     for website <- Websites.available_websites() do
-        
+
   #     end
   #   end
   # end

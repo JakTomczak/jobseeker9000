@@ -5,7 +5,7 @@ defmodule Jobseeker9000.Jobs.CompanyTest do
   alias Jobseeker9000.Jobs.Company.Schema
 
   @dummy_name "dummy"
-  
+
   @company %{
     "name" => @dummy_name,
     "url" => "pracuj.pl/firma/1",
@@ -22,10 +22,10 @@ defmodule Jobseeker9000.Jobs.CompanyTest do
     test "with invalid data" do
       params = Map.delete(@company, "name")
       assert {:error, _changeset} = Company.create(params)
-      
+
       params = Map.delete(@company, "url")
       assert {:error, _changeset} = Company.create(params)
-      
+
       params = Map.delete(@company, "found_on")
       assert {:error, _changeset} = Company.create(params)
     end

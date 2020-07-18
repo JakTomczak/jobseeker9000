@@ -1,20 +1,20 @@
 defmodule Jobseeker9000.Floker.ContextTest do
   use Jobseeker9000.DataCase
 
-  alias Jobseeker9000.Floker.Context 
+  alias Jobseeker9000.Floker.Context
 
   describe "Context . make/1" do
     test "with one entry type" do
       assert %{remote: true} = Context.make([@remote])
-      
+
       assert %{place: "Poznań", radius: 5} = Context.make([@poznan])
-      
+
       assert %{categories: [%{"default" => "Programming"}]} = Context.make([@programming])
-      
+
       assert %{keywords: ["Elixir"]} = Context.make([@elixir])
-      
+
       assert %{employment_type: "Full time"} = Context.make([@full_time])
-      
+
       assert %{salary_min: %{"pracuj" => 7500}} = Context.make([@dollars_2000])
     end
 
@@ -48,12 +48,12 @@ defmodule Jobseeker9000.Floker.ContextTest do
       flags = [@remote, @programming, @elixir, @full_time, @dollars_2000]
 
       assert %{
-        remote: true,
-        categories: [%{}],
-        keywords: ["Elixir"],
-        employment_type: "Full time",
-        salary_min: %{"pracuj" => 7500}
-      } = Context.make(flags)
+               remote: true,
+               categories: [%{}],
+               keywords: ["Elixir"],
+               employment_type: "Full time",
+               salary_min: %{"pracuj" => 7500}
+             } = Context.make(flags)
     end
   end
 end

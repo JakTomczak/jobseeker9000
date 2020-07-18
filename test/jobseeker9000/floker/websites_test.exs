@@ -1,6 +1,6 @@
 defmodule Jobseeker9000.Floker.WebsitesTest do
   use Jobseeker9000.DataCase
-  
+
   alias Jobseeker9000.Floker.Websites
   alias Jobseeker9000.Floker.Context
 
@@ -12,7 +12,7 @@ defmodule Jobseeker9000.Floker.WebsitesTest do
     matlab: "Matlab;kw/",
     full_time: "ws=0&",
     part_time: "ws=1&",
-    dollars_2000: "sal=7500&",
+    dollars_2000: "sal=7500&"
   }
 
   describe "Websites . search_url/2 on pracuj.pl" do

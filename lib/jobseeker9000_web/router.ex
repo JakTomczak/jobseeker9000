@@ -18,7 +18,8 @@ defmodule Jobseeker9000Web.Router do
 
     get "/", PageController, :index
 
-    resources "/flag", FlagController#, only: [:index, :new, :create, :edit, :update]
+    # , only: [:index, :new, :create, :edit, :update]
+    resources "/flag", FlagController
 
     resources "/offer", OfferController, only: [:index, :edit, :update]
 

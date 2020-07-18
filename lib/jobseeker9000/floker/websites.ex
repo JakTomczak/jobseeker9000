@@ -29,11 +29,11 @@ defmodule Jobseeker9000.Floker.Websites do
 
     index_url = apply(module, :index, [])
 
-    order = 
+    order =
       apply(module, :url_order, [])
       |> Enum.filter(fn atom -> Enum.member?(not_empty, atom) end)
-    
-    order = 
+
+    order =
       if List.last(order) == :question_mark do
         List.delete_at(order, length(order) - 1)
       else
@@ -41,11 +41,11 @@ defmodule Jobseeker9000.Floker.Websites do
       end
 
     order
-    |> Enum.map(fn atom -> 
+    |> Enum.map(fn atom ->
       apply(module, :url_query, [atom, Map.get(context, atom)])
     end)
-    |> Enum.reduce(index_url, fn part, acc -> 
-      acc <> part 
+    |> Enum.reduce(index_url, fn part, acc ->
+      acc <> part
     end)
   end
 end

@@ -20,6 +20,7 @@ defmodule Jobseeker9000Web.FlagController do
         conn
         |> put_flash(:info, "#{flag.name} created!")
         |> redirect(to: Routes.page_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end

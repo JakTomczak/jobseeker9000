@@ -7,7 +7,7 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
     |> length()
     |> case do
       0 -> true
-      _ -> false 
+      _ -> false
     end
   end
 
@@ -27,7 +27,7 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
   def index() do
     "https://www.pracuj.pl/praca/"
   end
-  
+
   def offer_base() do
     "https://www.pracuj.pl"
   end
@@ -97,14 +97,14 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
   def url_query(:employment_type, "Part time") do
     "ws=1&"
   end
-  
+
   @doc """
   The html marker that holds all information needed for scrapping.
   """
   def bigcontainer() do
     "div#results ul.results__list-container"
   end
-  
+
   @doc """
   The html selector, that each of corresponding markers hold all information about one offer.
   """
@@ -142,9 +142,9 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
   end
 
   def offer_status(div) do
-    [small_div] =
-      Floki.find(div, "[data-test=sections-benefit-expiration]")
+    [small_div] = Floki.find(div, "[data-test=sections-benefit-expiration]")
     both_texts = Floki.text(small_div, sep: ";")
+
     case String.split(both_texts, ";") do
       [_offer_expired] ->
         {:expired, nil, nil}
@@ -181,8 +181,9 @@ defmodule Jobseeker9000.Floker.Websites.Pracuj do
       "września" => 9,
       "października" => 10,
       "listopada" => 11,
-      "grudnia" => 12,
+      "grudnia" => 12
     }
+
     [day, month, year] = String.split(date_text, " ")
     month = String.downcase(month)
     month = polish_months[month]

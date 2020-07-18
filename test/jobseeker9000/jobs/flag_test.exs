@@ -10,7 +10,7 @@ defmodule Jobseeker9000.Jobs.FlagTest do
     "name" => @dummy_name,
     "calls" => "some calls"
   }
-  
+
   describe "Flag create/1" do
     test "with valid data" do
       params = @flag
@@ -21,7 +21,7 @@ defmodule Jobseeker9000.Jobs.FlagTest do
     test "with invalid data" do
       params = Map.delete(@flag, "name")
       assert {:error, _changeset} = Flag.create(params)
-      
+
       params = Map.delete(@flag, "calls")
       assert {:error, _changeset} = Flag.create(params)
     end

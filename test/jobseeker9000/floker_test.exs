@@ -1,6 +1,6 @@
 defmodule Jobseeker9000.FlokerTest do
   use Jobseeker9000.DataCase
-  
+
   alias Jobseeker9000.Floker
 
   describe "Floker . poison!/1" do
@@ -10,7 +10,7 @@ defmodule Jobseeker9000.FlokerTest do
       assert html =~ "Google"
       assert html =~ "</body>"
     end
-    
+
     test "with invalid url" do
       assert_raise RuntimeError, fn -> Floker.poison!("https://www.bardzopolskanazwa.en/") end
     end
@@ -24,7 +24,7 @@ defmodule Jobseeker9000.FlokerTest do
   #     assert html =~ "Google"
   #     assert html =~ "</body>"
   #   end
-    
+
   #   test "with invalid url" do
   #     assert_raise RuntimeError, fn -> Floker.poison!("https://www.bardzopolskanazwa.en/") end
   #   end

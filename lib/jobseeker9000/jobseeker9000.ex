@@ -3,13 +3,17 @@ defmodule Jobseeker9000.Jobseeker9000 do
   alias Jobseeker9000.Floker.Context
 
   def test_search(what) do
-    context = Context.make([%{
-      name: "Remote",
-      type: "remote"
-    }])
+    context =
+      Context.make([
+        %{
+          name: "Remote",
+          type: "remote"
+        }
+      ])
+
     Jobseeker9000.Floker.scrap_by_context(what, context)
     |> inspect()
-  rescue 
+  rescue
     e in RuntimeError ->
       inspect(e)
   end

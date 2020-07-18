@@ -5,15 +5,16 @@ defmodule Jobseeker9000Web.PageController do
 
   defp test() do
     html = """
-      <div>
-        <div data-lol="abba">
-          ojcze
-        </div>
-        <div data-lol="abba">
-          lorem
-        </div>
+    <div>
+      <div data-lol="abba">
+        ojcze
       </div>
-      """
+      <div data-lol="abba">
+        lorem
+      </div>
+    </div>
+    """
+
     Floki.find(html, "[data-lol=abba]")
     |> inspect()
   end
